@@ -1,0 +1,20 @@
+{
+  "name": "fastify-todos",
+  "version": "0.0.1",
+  "description": "A simple TODO list buit on Fastify",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fastify",
+    "todo",
+    "todos"
+  ],
+  "author": "Phuong Vu",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^3.23.1"
+  }
+}
