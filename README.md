@@ -2,11 +2,12 @@
 *Based on this [tutorial](https://wanjohi.vercel.app/posts/fastify-and-postgresql-rest-api)*.
 
 ## Installation
-1. Install PostgreSQL. 
+1. Install PostgreSQL and create a database with a table for to-do items (see [PostgreSQL installaton seciton](#postgresql-installation))
 2. Install `nodemon` globally with `npm install -g nodemon`.
 3. In the project root, run `npm install` to install all dependencies.
 
 ## PostgreSQL installation
+### Install the PostgreSQL server
 On WSL, follow this [guide](https://docs.microsoft.com/en-us/windows/wsl/tutorials/wsl-database).
 
 Default configuration of PostgreSQL on Linux/Unix/WSL use logged in system user as a mean of authentication. The default
@@ -44,6 +45,25 @@ Fromt then on, you can log in to PostgreSQL using password, such as:
 ```sh
 $pgsql -h localhost -U postgres
 ```
+### Create the todos database and table
+Log into PostgreSQL server and create the database `todos`, and then create the `todos` table with:
+```sql
+CREATE TABLE todos ( 
+    id UUID PRIMARY KEY, 
+    name VARCHAR(255) NOT NULL, 
+    "createdAt" TIMESTAMP NOT NULL, 
+    important BOOLEAN NOT NULL, 
+    "dueDate" TIMESTAMP, 
+    done BOOLEAN NOT NULL 
+);
+```
+You might want to have some items in that table to test the listing API. Do so with:
+```sql
+INSERT INTO todos (id, name, "createdAt", important, "dueDate",  done) 
+VALUES ('54e694ce-6003-46e6-9cfd-b1cf0fe9d332', 'learn fastify', '2021-04-20T12:39:25Z', true, '2021-04-22T15:22:20Z', false); 
+INSERT INTO todos (id, name, "createdAt", important, "dueDate",  done)  
+VALUES ('d595655e-9691-4d1a-9a6b-9fbba046ae36', 'learn REST APIs', '2021-04-18T07:24:07Z',true, null, false);
+```
 
 ## Run
 Create an `.env` file at the project root and put in the following lines (modifify the values to your need):
@@ -57,3 +77,31 @@ DB_NAME=todos
 ```
 Run this app with `npm run start`. The server should be listenning to API_PORT above. Then use browser or a REST query 
 tool (such as Postman) to test the app.
+
+## API document
+
+### List all to-do items:
+Make a GET request at `/` endpoint.
+
+### Adding to-do item
+Make a POST request at `/` endpoint with this JSON body:
+```json
+{
+    "name" : "Buy medicine",
+    "important" : true,
+    "dueDate" : "2021-11-09T11:00:00"
+}
+```
+### Update a to-do item
+Make a PATCH request at `/id` endpoint, where `id` is the ID of the item, such as `/54e694ce-6003-46e6-9cfd-b1cf0fe9d332` and this JSON
+body:
+```json
+{
+    "important" : false,
+    "dueDate" : "2021-11-09T9:00:00Z",
+    "done": true
+}
+```
+
+### Delete a to-do item
+Make a DELETE request at `/id` endpoint,  where `id` is the ID of the item, such as `/54e694ce-6003-46e6-9cfd-b1cf0fe9d332`.
