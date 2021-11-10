@@ -17,11 +17,10 @@ const client = new Client({
 // This function try to connect the DB and then attach the client object as a Fastify's decorator (fastify.db.client).
 async function dbconnector(fastify, options) {
 	try {
-		await client.connect()
-		console.log("db connected succesfully")
-		fastify.decorate('db', { client })
+		await client.connect();
+		fastify.decorate('db', { client });
 	} catch (err) {
-		console.error(err)
+		console.error(err);
 	}
 }
 

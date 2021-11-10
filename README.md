@@ -65,7 +65,7 @@ INSERT INTO todos (id, name, "createdAt", important, "dueDate",  done)
 VALUES ('d595655e-9691-4d1a-9a6b-9fbba046ae36', 'learn REST APIs', '2021-04-18T07:24:07Z',true, null, false);
 ```
 
-## Run
+## Set the server's parameters.
 Create an `.env` file at the project root and put in the following lines (modifify the values to your need):
 ```
 API_PORT=3000
@@ -75,15 +75,22 @@ DB_USER=postgres
 DB_PASSWORD=123abc
 DB_NAME=todos
 ```
-Run this app with `npm run start`. The server should be listenning to API_PORT above. Then use browser or a REST query 
+
+## Test
+Run `npm test`. The tests use [Node TAP](https://node-tap.org/) test package and Fastify's 
+[light-my-request](https://github.com/fastify/light-my-request) to simulate HTTP request/response to test the app's 
+logic without running the server instance.
+
+## Run
+Run this app with `npm start`. The server should be listenning to API_PORT above. Then use browser or a REST query 
 tool (such as Postman) to test the app.
 
 ## API document
 
-### List all to-do items:
+### 1. List all to-do items:
 Make a GET request at `/` endpoint.
 
-### Adding to-do item
+### 2. Adding to-do item
 Make a POST request at `/` endpoint with this JSON body:
 ```json
 {
@@ -92,7 +99,7 @@ Make a POST request at `/` endpoint with this JSON body:
     "dueDate" : "2021-11-09T11:00:00"
 }
 ```
-### Update a to-do item
+### 3. Update a to-do item
 Make a PATCH request at `/id` endpoint, where `id` is the ID of the item, such as `/54e694ce-6003-46e6-9cfd-b1cf0fe9d332` and this JSON
 body:
 ```json
@@ -102,6 +109,5 @@ body:
     "done": true
 }
 ```
-
-### Delete a to-do item
+### 4. Delete a to-do item
 Make a DELETE request at `/id` endpoint,  where `id` is the ID of the item, such as `/54e694ce-6003-46e6-9cfd-b1cf0fe9d332`.

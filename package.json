@@ -4,8 +4,8 @@
   "description": "A simple TODO list buit on Fastify",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon src/server.js",
+    "test": "tap --reporter=list --lines=80 --statements=80"
   },
   "keywords": [
     "fastify",
@@ -19,6 +19,8 @@
     "fastify": "^3.23.1",
     "fastify-plugin": "^3.0.0",
     "pg": "^8.7.1",
+    "pino-pretty": "^7.2.0",
+    "tap": "^15.0.10",
     "uuid": "^8.3.2"
   }
 }
