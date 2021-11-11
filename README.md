@@ -10,40 +10,36 @@
 ### Install the PostgreSQL server
 On WSL, follow this [guide](https://docs.microsoft.com/en-us/windows/wsl/tutorials/wsl-database).
 
-Default configuration of PostgreSQL on Linux/Unix/WSL use logged in system user as a mean of authentication. The default
-admin user that PostgreSQL server run as is `postgres`, which also a system user. To logged in the local PostgreSQL with
-`pgsql` tool, you must logged in the system as `postgres`, or use `sudo`, such as this command:
-```sh
-$sudo -u postgres pgsql
-```
+During the installation, a special database admin user `postgres` is created, which is also a system user, and the 
+authentication method for this user is set to `peer`, which mean the server trust the logged in system local user, thus 
+require no more authentication for this user.
 
-To make it easier and allow access to PostgreSQL as `postgres` using password, edit (as root/sudo) this file 
+But we will need to connect to the server from other places, so we have to switch the authentication method to using
+password. First, we have to logged in the server using `psql` client program:
+```sh
+$sudo -u postgres psql
+```
+Then, in the `psql` prompt, type in the following SQL statement to set the password for `postgres` database user:
+```sql
+ALTER USER postgres PASSWORD '123abc';
+```
+After that, the password for the database user `postgres` was set, type `\q` to exit `psql`.
+
+Now we can configure PostgreSQL server to switch to using password authentication for this user, by edit (as root/sudo) this file 
 `/etc/postgresql/12/main/pg_hba.conf`, and change `peer` method in these lines to `md5`.
 Before:
 ```conf
-# Database administrative login by Unix domain socket
 local   all             postgres                                peer
-
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
-
-# "local" is for Unix domain socket connections only
-local   all             all                                     peer
 ```
 After:
 ```conf
-# Database administrative login by Unix domain socket
 local   all             postgres                                md5
-
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
-
-# "local" is for Unix domain socket connections only
-local   all             all                                     md5
 ```
 After that, restart the PostgreSQL server, such as `sudo service postgresql restart`.
 
 Fromt then on, you can log in to PostgreSQL using password, such as:
 ```sh
-$pgsql -h localhost -U postgres
+$psql -h localhost -U postgres
 ```
 ### Create the todos database and table
 Log into PostgreSQL server and create the database `todos`, and then create the `todos` table with:
